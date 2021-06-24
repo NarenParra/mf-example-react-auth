@@ -1,7 +1,18 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {
+  StylesProvider,
+  createGenerateClassName,
+} from "@material-ui/core/styles";
+
 import MarketingApp from "./components/MarketingApp";
+import AuthApp from "./components/AuthApp";
 import Header from "./components/Header";
+
+const generateClassName = createGenerateClassName({
+  productionPrefix: "co",
+});
+
 //import { MarketingReactComponent } from "marketing/MarketingApp";
 
 //se puede utilizar directamente los componentes de react de Marketing
@@ -12,11 +23,16 @@ import Header from "./components/Header";
 export default () => {
   // return <MarketingReactComponent />;
   return (
-    <>
-      <BrowserRouter>
-        <Header />
-        <MarketingApp />
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <StylesProvider generateClassName={generateClassName}>
+        <div>
+          <Header />
+          <Switch>
+            <Route path="/auth" component={AuthApp} />
+            <Route path="/" component={MarketingApp} />
+          </Switch>
+        </div>
+      </StylesProvider>
+    </BrowserRouter>
   );
 };
