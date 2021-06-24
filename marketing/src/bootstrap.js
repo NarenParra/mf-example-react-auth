@@ -4,10 +4,11 @@ import { createMemoryHistory, createBrowserHistory } from "history";
 import App from "./App";
 
 // Mount function to start up the app
-const mount = (el, { onNavigate, defaultHistory }) => {
+const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
   //creamos el objeto historia para pasarlo al app
   //y que el app no cree su propia historia
-  const history = defaultHistory || createMemoryHistory();
+  const history =
+    defaultHistory || createMemoryHistory({ initialEntries: [initialPath] });
   //update memory history
   if (onNavigate) {
     history.listen(onNavigate);
