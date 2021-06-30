@@ -1,10 +1,15 @@
 import { mount } from "auth/AuthApp";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default ({ onSignIn }) => {
   const ref = useRef(null);
   const history = useHistory();
+  const [stateAuth, setStateAuth] = useState({});
+
+  const changeState = (state) => {
+    setStateAuth(state);
+  };
 
   useEffect(() => {
     const { onParentNavigate } = mount(ref.current, {
@@ -17,6 +22,7 @@ export default ({ onSignIn }) => {
         }
       },
       onSignIn,
+      changeState,
     });
 
     history.listen(onParentNavigate);

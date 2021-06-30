@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -56,12 +57,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ isSignedIn, onSignOut }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const onClick = () => {
     if (isSignedIn && onSignOut) {
       onSignOut();
     }
   };
+  dispatch({
+    type: "container/login",
+    payload: { login: isSignedIn },
+  });
 
   return (
     <React.Fragment>

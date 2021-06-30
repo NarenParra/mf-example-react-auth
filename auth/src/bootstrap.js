@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useSelector } from "react";
 import ReactDOM from "react-dom";
 import { createMemoryHistory, createBrowserHistory } from "history";
 import App from "./App";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
-const mount = (el, { onSignIn, onNavigate, defaultHistory, initialPath }) => {
+const mount = (
+  el,
+  { onSignIn, changeState, onNavigate, defaultHistory, initialPath }
+) => {
+  const makeStore = () => store;
+  makeStore();
+
   //agregamos un estado inicial para memory
   const history =
     defaultHistory ||
@@ -15,7 +23,12 @@ const mount = (el, { onSignIn, onNavigate, defaultHistory, initialPath }) => {
     history.listen(onNavigate);
   }
 
-  ReactDOM.render(<App onSignIn={onSignIn} history={history} />, el);
+  ReactDOM.render(
+    <Provider store={store}>
+      <App onSignIn={onSignIn} history={history} stateFromAuth={changeState} />
+    </Provider>,
+    el
+  );
 
   return {
     onParentNavigate({ pathname: nextPathname }) {
